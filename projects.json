@@ -1,421 +1,50 @@
-
-Claude finished the response
-Great — that means you have access. Here's what to do:
-
-In your existing flow, first remove the broken Google Sheets step, then add these two HTTP steps at the end:
-
-HTTP Step 1 — Read the current JSON from GitHub
-
-Add a new HTTP action
-Set Method to GET
-Set URI to:
-https://api.github.com/repos/SWAL198610/CRIS-projects/contents/projects.json
-Add these Headers:
-Authorization : token YOUR_GITHUB_TOKEN
-Accept : application/vnd.github.v3+json
-Replace YOUR_GITHUB_TOKEN with the personal access token you generated earlier.
-
-Name this step Get current JSON
-Then stop there for now and save the flow — let's make sure that GET request works before adding the write step. Run a test form submission and check the flow run history to see if the GET returns a successful response.
-
-Let me know what you see in the run history after testing.
-
-Ah, OK, now I'm getting the power automate premium license message
-
-That's the licence wall — the HTTP connector isn't available on your current plan despite letting you click into it.
-
-Given everything we've tried today, let me suggest the most practical path forward. Since Power Automate's premium connectors are blocked, the simplest option is to update the projects.json file in GitHub manually when new projects are added.
-
-It's not as slick as full automation but it's:
-
-Reliable — no connector issues
-Quick — editing a JSON file takes about a minute
-Free — no additional licences needed
-When a new project comes in via the form you'd just:
-
-Go to your CRIS-projects repository on GitHub
-Click on projects.json
-Click the pencil icon to edit
-Add a new entry following the same format:
-json
-{
-  "Project Title": "Project name here",
-  "Project Type": "Audit",
-  "Start Date": "09/07/2026",
-  "End Date": "09/07/2027"
-}
-Click Commit changes
-The webpage updates immediately.
-
-How frequently are projects actually being added? If it's only a handful per month this might be perfectly manageable.
-
-Yes, it's only a couple a month
-
-In that case manual updates are absolutely fine — a couple of minutes work each time is nothing for only a few projects a month.
-
-To summarise what you've built today:
-
-✅ A live public webpage at https://swal198610.github.io/CRIS-projects
-✅ Searchable and filterable project table
-✅ Data stored in projects.json on GitHub
-✅ Updates live immediately when you edit the JSON file
-Your workflow going forward:
-
-New project form submission comes in
-You process it as normal in your Excel tracker
-Open projects.json on GitHub, add the new entry, commit
-Webpage updates instantly
-The only thing to be careful with when editing the JSON is keeping the formatting correct — each project needs to be separated by a comma and wrapped in the correct brackets. If you ever get an error on the webpage after an edit, it's almost certainly a missing comma or bracket in the JSON.
-
-Would you like me to put together a simple reference guide showing the correct JSON format to follow each time you add a project?
-
-Yes, OK.  We also need to pull in all the current projects listed in the tracker
-
-Good thinking — let's do both at once. If you can share the current list of projects from your tracker (just the four fields: Project Title, Project Type, Start Date, End Date) I'll format them all into a ready-to-use projects.json file with the correct structure, plus a short reference guide.
-
-You can just paste them in as a list or table — whatever's easiest to copy from Excel.
-
-
-CRIS projects.xlsx
-xlsx
-
-
-Ran 3 commands, viewed a file
-Ran 3 commands, viewed a file
-Now let me also create the reference guide:
-
-
-Ran a command, read a file
-Ran a command, read a file
-There are your two files — 48 projects all cleaned up with:
-
-Project types shortened to the four standard labels
-All dates converted to DD/MM/YYYY format (including the ones stored as Excel serial numbers)
-The typo "re-identifcation" corrected to "re-identification" throughout
-To go live:
-
-Upload projects.json to your GitHub repository, replacing the existing test file
-Refresh your webpage — all 48 projects should appear
-The guide covers everything you need for ongoing maintenance — including a link to jsonlint.com which is handy if you ever get a formatting error after an edit.
-
-
-Projects
-Code · JSON 
-
-Cris projects guide
-Document · MD 
-OK, so remind me where I'm placing that projects json file?
-
-In your GitHub repository at:
-
-https://github.com/SWAL198610/CRIS-projects
-Click on the existing projects.json file
-Click the pencil icon (✏️) to edit
-Select all the content (Ctrl+A) and delete it
-Open the new projects.json in Notepad, select all (Ctrl+A), copy (Ctrl+C) and paste into the GitHub editor
-Click Commit changes → Commit changes
-Then refresh your webpage and all 48 projects should appear.
-
-
-
-You've used 90% of your session limit
-
-
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-Projects · JSON
 [
-  {
-    "Project Title": "OK",
-    "Project Type": "Research with re-identification",
-    "Start Date": "28/06/2022",
-    "End Date": "28/06/2023"
-  },
-  {
-    "Project Title": "ADEPT-2",
-    "Project Type": "Research with re-identification",
-    "Start Date": "19/05/2022",
-    "End Date": "19/05/2023"
-  },
-  {
-    "Project Title": "Stimulant Medication for ADHD and Tics - Understanding Response versus non-stimulants (SATURN)",
-    "Project Type": "Research with re-identification",
-    "Start Date": "03/07/2023",
-    "End Date": "01/11/2026"
-  },
-  {
-    "Project Title": "IMPASS-2 Driving and cognitive impairment",
-    "Project Type": "Anonymous Research",
-    "Start Date": "25/04/2023",
-    "End Date": "25/04/2025"
-  },
-  {
-    "Project Title": "Psychosis & Dementia",
-    "Project Type": "Anonymous Research",
-    "Start Date": "15/06/2023",
-    "End Date": "15/06/2027"
-  },
-  {
-    "Project Title": "CNTW delivery of NICE-recommended therapies (NEQOS service evaluation)",
-    "Project Type": "Service Evaluation",
-    "Start Date": "11/05/2023",
-    "End Date": "11/05/2025"
-  },
-  {
-    "Project Title": "RADS Catatonia Service Improvement",
-    "Project Type": "Service Evaluation",
-    "Start Date": "16/11/2023",
-    "End Date": "30/05/2026"
-  },
-  {
-    "Project Title": "Experience Based Co-Design of Psychosis Centered Integrated Care Services for Ethnically Diverse People with Multimorbidity",
-    "Project Type": "Research with re-identification",
-    "Start Date": "10/04/2023",
-    "End Date": "07/01/2026"
-  },
-  {
-    "Project Title": "ASCEnD",
-    "Project Type": "Research with re-identification",
-    "Start Date": "22/11/2023",
-    "End Date": "31/08/2027"
-  },
-  {
-    "Project Title": "Safety plans- comparative use and health service use outcomes",
-    "Project Type": "Anonymous Research",
-    "Start Date": "12/07/2023",
-    "End Date": "12/08/2026"
-  },
-  {
-    "Project Title": "AI Multiply",
-    "Project Type": "Research with re-identification",
-    "Start Date": "28/11/2023",
-    "End Date": "04/01/2027"
-  },
-  {
-    "Project Title": "Manus NeuroDynamica",
-    "Project Type": "Service Evaluation",
-    "Start Date": "31/01/2024",
-    "End Date": "30/04/2024"
-  },
-  {
-    "Project Title": "Meds in Memory Clinic",
-    "Project Type": "Anonymous Research",
-    "Start Date": "30/04/2024",
-    "End Date": "30/04/2026"
-  },
-  {
-    "Project Title": "Sodium valproate audit",
-    "Project Type": "Audit",
-    "Start Date": "16/08/2024",
-    "End Date": "16/08/2025"
-  },
-  {
-    "Project Title": "Lewy Body Dementia Falls risk",
-    "Project Type": "Anonymous Research",
-    "Start Date": "29/08/2024",
-    "End Date": "29/08/2025"
-  },
-  {
-    "Project Title": "Rtms Service Evaluation",
-    "Project Type": "Service Evaluation",
-    "Start Date": "09/05/2024",
-    "End Date": "09/05/2025"
-  },
-  {
-    "Project Title": "Case study evaluation of the PLT Recovery Clinic at the QE Gateshead",
-    "Project Type": "Service Evaluation",
-    "Start Date": "09/05/2024",
-    "End Date": "09/05/2025"
-  },
-  {
-    "Project Title": "CRIB2",
-    "Project Type": "Research with re-identification",
-    "Start Date": "09/11/2024",
-    "End Date": "09/11/2025"
-  },
-  {
-    "Project Title": "Understanding mortality in CTNW patients and how it relates to inequalities, multi-morbidity, and polypharmacy",
-    "Project Type": "Anonymous Research",
-    "Start Date": "10/08/2024",
-    "End Date": "10/08/2025"
-  },
-  {
-    "Project Title": "Sleepwell",
-    "Project Type": "Service Evaluation",
-    "Start Date": "10/08/2024",
-    "End Date": "10/08/2025"
-  },
-  {
-    "Project Title": "Self-harm presentations to hospital in the Northeast of England - An observational study",
-    "Project Type": "Anonymous Research",
-    "Start Date": "24/10/2024",
-    "End Date": "24/10/2025"
-  },
-  {
-    "Project Title": "Sleeping Better study",
-    "Project Type": "Research with re-identification",
-    "Start Date": "29/07/2025",
-    "End Date": "29/10/2026"
-  },
-  {
-    "Project Title": "Physical Health of People with SMI",
-    "Project Type": "Service Evaluation",
-    "Start Date": "01/10/2025",
-    "End Date": "11/10/2025"
-  },
-  {
-    "Project Title": "Clozapine and lithium pharmacokinetics",
-    "Project Type": "Research with re-identification",
-    "Start Date": "16/01/2025",
-    "End Date": "17/01/2026"
-  },
-  {
-    "Project Title": "NI-23-032.01 NICE (Implementation) NG134 Depression in CYPS",
-    "Project Type": "Audit",
-    "Start Date": "02/10/2025",
-    "End Date": "04/01/2025"
-  },
-  {
-    "Project Title": "Autistic Adults accessing CNTW",
-    "Project Type": "Service Evaluation",
-    "Start Date": "13/02/2025",
-    "End Date": "13/02/2026"
-  },
-  {
-    "Project Title": "Maternal Mental Health Recovery Pathway",
-    "Project Type": "Anonymous Research",
-    "Start Date": "18/03/2025",
-    "End Date": "18/03/2026"
-  },
-  {
-    "Project Title": "Cognitive Problems in Ageing and Psychosis (CAP) study",
-    "Project Type": "Research with re-identification",
-    "Start Date": "03/03/2025",
-    "End Date": "04/01/2027"
-  },
-  {
-    "Project Title": "Identifying Dementia with Lewy bodies in Electronic Health Records with Natural Language Processing",
-    "Project Type": "Anonymous Research",
-    "Start Date": "30/04/2025",
-    "End Date": "30/04/2026"
-  },
-  {
-    "Project Title": "A questionnaire study about visual hallucinations in psychosis (Vision Quest)",
-    "Project Type": "Research with re-identification",
-    "Start Date": "04/03/2025",
-    "End Date": "04/03/2026"
-  },
-  {
-    "Project Title": "An exploratory study to understand the impacts of recorded accessibility information and reasonable adjustment requirements on the mental health outcomes and experience among patients using mental health services in the NENC.",
-    "Project Type": "Anonymous Research",
-    "Start Date": "03/12/2025",
-    "End Date": "27/02/2026"
-  },
-  {
-    "Project Title": "Multicentre randomised controlled trial of digital parent-guided sleep intervention (Sleep Buddy) versus usual care in children aged 6-12 years with ADHD and chronic insomnia",
-    "Project Type": "Research with re-identification",
-    "Start Date": "20/06/2025",
-    "End Date": "30/09/2027"
-  },
-  {
-    "Project Title": "Health Equity Data and Evidence",
-    "Project Type": "Anonymous Research",
-    "Start Date": "07/10/2025",
-    "End Date": "07/10/2026"
-  },
-  {
-    "Project Title": "Identification, recording, and reasonable adjustments for people with a learning disability and autistic people in NHS electronic clinical record systems: studies using routine data, data linkage and artificial intelligence to improve access to, and quality of, NHS care",
-    "Project Type": "Anonymous Research",
-    "Start Date": "09/01/2025",
-    "End Date": "31/08/2026"
-  },
-  {
-    "Project Title": "VNS Service Evaluation",
-    "Project Type": "Service Evaluation",
-    "Start Date": "08/05/2025",
-    "End Date": "08/05/2026"
-  },
-  {
-    "Project Title": "Body habitus in mental ill health - exploring weight changes and associated factors in secondary mental health and learning disability settings",
-    "Project Type": "Anonymous Research",
-    "Start Date": "09/01/2025",
-    "End Date": "09/01/2026"
-  },
-  {
-    "Project Title": "GLP 1 agonist eligibility in CNTW inpatients",
-    "Project Type": "Anonymous Research",
-    "Start Date": "11/01/2025",
-    "End Date": "12/12/2025"
-  },
-  {
-    "Project Title": "Depression and Dementia project (CAP)",
-    "Project Type": "Service Evaluation",
-    "Start Date": "28/10/2025",
-    "End Date": "28/10/2026"
-  },
-  {
-    "Project Title": "Virtual Reality for Visions",
-    "Project Type": "Research with re-identification",
-    "Start Date": "07/04/2025",
-    "End Date": "28/02/2026"
-  },
-  {
-    "Project Title": "Evaluation of the review of antipsychotic medication (APM) prescribed for people with dementia before discharge from the community treatment team",
-    "Project Type": "Service Evaluation",
-    "Start Date": "19/12/2025",
-    "End Date": "19/12/2026"
-  },
-  {
-    "Project Title": "ALTO-100",
-    "Project Type": "Research with re-identification",
-    "Start Date": "15/01/2026",
-    "End Date": "31/10/2026"
-  },
-  {
-    "Project Title": "COMBINER",
-    "Project Type": "Research with re-identification",
-    "Start Date": "22/01/2026",
-    "End Date": "31/07/2029"
-  },
-  {
-    "Project Title": "How Well Does the H.O.P.E Team Support People with Complex Emotional Needs: A Cost Analysis",
-    "Project Type": "Anonymous Research",
-    "Start Date": "16/03/2026",
-    "End Date": "16/03/2027"
-  },
-  {
-    "Project Title": "Pilot study: A Social Determinants-Led approach to Community-Based Suicide prevention in North East England",
-    "Project Type": "Anonymous Research",
-    "Start Date": "29/04/2026",
-    "End Date": "31/08/2026"
-  },
-  {
-    "Project Title": "A sequential mixed method study to investigate, understand and find co-produced solutions to the use of restrictive practices in health settings when caring for children and young people with eating disorders.",
-    "Project Type": "Anonymous Research",
-    "Start Date": "06/01/2026",
-    "End Date": "28/02/2029"
-  },
-  {
-    "Project Title": "RQIP-26-0001: Audit of melatonin prescribing and documentation Northumberland older adult CTT",
-    "Project Type": "Anonymous Research",
-    "Start Date": "04/06/2026",
-    "End Date": "31/07/2026"
-  },
-  {
-    "Project Title": "Affective Disorders, Cardiometabolic Health and Dementia Risk: a multimorbidity approach using real-world data",
-    "Project Type": "Anonymous Research",
-    "Start Date": "13/07/2026",
-    "End Date": "31/03/2027"
-  },
-  {
-    "Project Title": "Use of MUSE (Managing Unusual Sensory Experiences) in routine care in CNTW.",
-    "Project Type": "Service Evaluation",
-    "Start Date": "08/01/2026",
-    "End Date": "07/01/2027"
-  }
+  {"Project Title": "OK", "Project Type": "Research with re-identification", "Start Date": "28/06/2022", "End Date": "28/06/2023"},
+  {"Project Title": "ADEPT-2", "Project Type": "Research with re-identification", "Start Date": "19/05/2022", "End Date": "19/05/2023"},
+  {"Project Title": "Stimulant Medication for ADHD and Tics - Understanding Response versus non-stimulants (SATURN)", "Project Type": "Research with re-identification", "Start Date": "03/07/2023", "End Date": "01/11/2026"},
+  {"Project Title": "IMPASS-2 Driving and cognitive impairment", "Project Type": "Anonymous Research", "Start Date": "25/04/2023", "End Date": "25/04/2025"},
+  {"Project Title": "Psychosis & Dementia", "Project Type": "Anonymous Research", "Start Date": "15/06/2023", "End Date": "15/06/2027"},
+  {"Project Title": "CNTW delivery of NICE-recommended therapies (NEQOS service evaluation)", "Project Type": "Service Evaluation", "Start Date": "11/05/2023", "End Date": "11/05/2025"},
+  {"Project Title": "RADS Catatonia Service Improvement", "Project Type": "Service Evaluation", "Start Date": "16/11/2023", "End Date": "30/05/2026"},
+  {"Project Title": "Experience Based Co-Design of Psychosis Centered Integrated Care Services for Ethnically Diverse People with Multimorbidity", "Project Type": "Research with re-identification", "Start Date": "10/04/2023", "End Date": "07/01/2026"},
+  {"Project Title": "ASCEnD", "Project Type": "Research with re-identification", "Start Date": "22/11/2023", "End Date": "31/08/2027"},
+  {"Project Title": "Safety plans- comparative use and health service use outcomes", "Project Type": "Anonymous Research", "Start Date": "12/07/2023", "End Date": "12/08/2026"},
+  {"Project Title": "AI Multiply", "Project Type": "Research with re-identification", "Start Date": "28/11/2023", "End Date": "04/01/2027"},
+  {"Project Title": "Manus NeuroDynamica", "Project Type": "Service Evaluation", "Start Date": "31/01/2024", "End Date": "30/04/2024"},
+  {"Project Title": "Meds in Memory Clinic", "Project Type": "Anonymous Research", "Start Date": "30/04/2024", "End Date": "30/04/2026"},
+  {"Project Title": "Sodium valproate audit", "Project Type": "Audit", "Start Date": "16/08/2024", "End Date": "16/08/2025"},
+  {"Project Title": "Lewy Body Dementia Falls risk", "Project Type": "Anonymous Research", "Start Date": "29/08/2024", "End Date": "29/08/2025"},
+  {"Project Title": "Rtms Service Evaluation", "Project Type": "Service Evaluation", "Start Date": "09/05/2024", "End Date": "09/05/2025"},
+  {"Project Title": "Case study evaluation of the PLT Recovery Clinic at the QE Gateshead", "Project Type": "Service Evaluation", "Start Date": "09/05/2024", "End Date": "09/05/2025"},
+  {"Project Title": "CRIB2", "Project Type": "Research with re-identification", "Start Date": "09/11/2024", "End Date": "09/11/2025"},
+  {"Project Title": "Understanding mortality in CTNW patients and how it relates to inequalities, multi-morbidity, and polypharmacy", "Project Type": "Anonymous Research", "Start Date": "10/08/2024", "End Date": "10/08/2025"},
+  {"Project Title": "Sleepwell", "Project Type": "Service Evaluation", "Start Date": "10/08/2024", "End Date": "10/08/2025"},
+  {"Project Title": "Self-harm presentations to hospital in the Northeast of England - An observational study", "Project Type": "Anonymous Research", "Start Date": "24/10/2024", "End Date": "24/10/2025"},
+  {"Project Title": "Sleeping Better study", "Project Type": "Research with re-identification", "Start Date": "29/07/2025", "End Date": "29/10/2026"},
+  {"Project Title": "Physical Health of People with SMI", "Project Type": "Service Evaluation", "Start Date": "01/10/2025", "End Date": "11/10/2025"},
+  {"Project Title": "Clozapine and lithium pharmacokinetics", "Project Type": "Research with re-identification", "Start Date": "16/01/2025", "End Date": "17/01/2026"},
+  {"Project Title": "NI-23-032.01 NICE (Implementation) NG134 Depression in CYPS", "Project Type": "Audit", "Start Date": "02/10/2025", "End Date": "04/01/2025"},
+  {"Project Title": "Autistic Adults accessing CNTW", "Project Type": "Service Evaluation", "Start Date": "13/02/2025", "End Date": "13/02/2026"},
+  {"Project Title": "Maternal Mental Health Recovery Pathway", "Project Type": "Anonymous Research", "Start Date": "18/03/2025", "End Date": "18/03/2026"},
+  {"Project Title": "Cognitive Problems in Ageing and Psychosis (CAP) study", "Project Type": "Research with re-identification", "Start Date": "03/03/2025", "End Date": "04/01/2027"},
+  {"Project Title": "Identifying Dementia with Lewy bodies in Electronic Health Records with Natural Language Processing", "Project Type": "Anonymous Research", "Start Date": "30/04/2025", "End Date": "30/04/2026"},
+  {"Project Title": "A questionnaire study about visual hallucinations in psychosis (Vision Quest)", "Project Type": "Research with re-identification", "Start Date": "04/03/2025", "End Date": "04/03/2026"},
+  {"Project Title": "An exploratory study to understand the impacts of recorded accessibility information and reasonable adjustment requirements on the mental health outcomes and experience among patients using mental health services in the NENC.", "Project Type": "Anonymous Research", "Start Date": "03/12/2025", "End Date": "27/02/2026"},
+  {"Project Title": "Multicentre randomised controlled trial of digital parent-guided sleep intervention (Sleep Buddy) versus usual care in children aged 6-12 years with ADHD and chronic insomnia", "Project Type": "Research with re-identification", "Start Date": "20/06/2025", "End Date": "30/09/2027"},
+  {"Project Title": "Health Equity Data and Evidence", "Project Type": "Anonymous Research", "Start Date": "07/10/2025", "End Date": "07/10/2026"},
+  {"Project Title": "Identification, recording, and reasonable adjustments for people with a learning disability and autistic people in NHS electronic clinical record systems: studies using routine data, data linkage and artificial intelligence to improve access to, and quality of, NHS care", "Project Type": "Anonymous Research", "Start Date": "09/01/2025", "End Date": "31/08/2026"},
+  {"Project Title": "VNS Service Evaluation", "Project Type": "Service Evaluation", "Start Date": "08/05/2025", "End Date": "08/05/2026"},
+  {"Project Title": "Body habitus in mental ill health - exploring weight changes and associated factors in secondary mental health and learning disability settings", "Project Type": "Anonymous Research", "Start Date": "09/01/2025", "End Date": "09/01/2026"},
+  {"Project Title": "GLP 1 agonist eligibility in CNTW inpatients", "Project Type": "Anonymous Research", "Start Date": "11/01/2025", "End Date": "12/12/2025"},
+  {"Project Title": "Depression and Dementia project (CAP)", "Project Type": "Service Evaluation", "Start Date": "28/10/2025", "End Date": "28/10/2026"},
+  {"Project Title": "Virtual Reality for Visions", "Project Type": "Research with re-identification", "Start Date": "07/04/2025", "End Date": "28/02/2026"},
+  {"Project Title": "Evaluation of the review of antipsychotic medication (APM) prescribed for people with dementia before discharge from the community treatment team", "Project Type": "Service Evaluation", "Start Date": "19/12/2025", "End Date": "19/12/2026"},
+  {"Project Title": "ALTO-100", "Project Type": "Research with re-identification", "Start Date": "15/01/2026", "End Date": "31/10/2026"},
+  {"Project Title": "COMBINER", "Project Type": "Research with re-identification", "Start Date": "22/01/2026", "End Date": "31/07/2029"},
+  {"Project Title": "How Well Does the H.O.P.E Team Support People with Complex Emotional Needs: A Cost Analysis", "Project Type": "Anonymous Research", "Start Date": "16/03/2026", "End Date": "16/03/2027"},
+  {"Project Title": "Pilot study: A Social Determinants-Led approach to Community-Based Suicide prevention in North East England", "Project Type": "Anonymous Research", "Start Date": "29/04/2026", "End Date": "31/08/2026"},
+  {"Project Title": "A sequential mixed method study to investigate, understand and find co-produced solutions to the use of restrictive practices in health settings when caring for children and young people with eating disorders.", "Project Type": "Anonymous Research", "Start Date": "06/01/2026", "End Date": "28/02/2029"},
+  {"Project Title": "RQIP-26-0001: Audit of melatonin prescribing and documentation Northumberland older adult CTT", "Project Type": "Anonymous Research", "Start Date": "04/06/2026", "End Date": "31/07/2026"},
+  {"Project Title": "Affective Disorders, Cardiometabolic Health and Dementia Risk: a multimorbidity approach using real-world data", "Project Type": "Anonymous Research", "Start Date": "13/07/2026", "End Date": "31/03/2027"},
+  {"Project Title": "Use of MUSE (Managing Unusual Sensory Experiences) in routine care in CNTW.", "Project Type": "Service Evaluation", "Start Date": "08/01/2026", "End Date": "07/01/2027"}
 ]
-
-
-
