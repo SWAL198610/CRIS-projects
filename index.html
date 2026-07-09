@@ -106,8 +106,7 @@
 <footer>Data refreshed each time this page loads</footer>
 
 <script>
-  const SHEET_ID = '1b3tuQXWZFKu4nOkdNliPE7f3xRGdio7Frmv3zaHQnHY';
-  const JSON_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json';
+  const JSON_URL = 'https://raw.githubusercontent.com/SWAL198610/CRIS-projects/main/projects.json';
 
   const tbody      = document.getElementById('tbody');
   const searchEl   = document.getElementById('search');
@@ -118,18 +117,9 @@
 
   async function loadData() {
     try {
-      const res = await fetch(JSON_URL);
+      const res = await fetch(JSON_URL + '?t=' + Date.now()); // cache bust
       if (!res.ok) throw new Error('Network response was not ok');
-      const text = await res.text();
-      // Google wraps the JSON in a callback — strip it
-      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-      const rows = json.table.rows;
-      allRows = rows.map(row => [
-        row.c[0] ? String(row.c[0].v) : '',
-        row.c[1] ? String(row.c[1].v) : '',
-        row.c[2] ? formatVal(row.c[2]) : '',
-        row.c[3] ? formatVal(row.c[3]) : ''
-      ]);
+      allRows = await res.json();
       populateTypeFilter();
       render();
     } catch (err) {
@@ -138,14 +128,8 @@
     }
   }
 
-  function formatVal(cell) {
-    // Use the formatted value (f) if available, otherwise fall back to raw value
-    if (cell.f) return cell.f;
-    return cell.v ? String(cell.v) : '';
-  }
-
   function populateTypeFilter() {
-    const types = [...new Set(allRows.map(r => r[1]).filter(Boolean))].sort();
+    const types = [...new Set(allRows.map(r => r['Project Type']).filter(Boolean))].sort();
     types.forEach(t => {
       const opt = document.createElement('option');
       opt.value = t; opt.textContent = t;
@@ -158,8 +142,8 @@
     const type = typeFilter.value;
 
     const filtered = allRows.filter(r => {
-      const matchSearch = !q || [r[0], r[1], r[2], r[3]].some(v => v.toLowerCase().includes(q));
-      const matchType   = !type || r[1] === type;
+      const matchSearch = !q || ['Project Title','Project Type','Start Date','End Date'].some(k => (r[k] || '').toLowerCase().includes(q));
+      const matchType   = !type || r['Project Type'] === type;
       return matchSearch && matchType;
     });
 
@@ -174,10 +158,10 @@
 
     tbody.innerHTML = filtered.map(r =>
       '<tr>' +
-        '<td>' + esc(r[0] || '—') + '</td>' +
-        '<td><span class="badge">' + esc(r[1] || '—') + '</span></td>' +
-        '<td>' + esc(r[2] || '—') + '</td>' +
-        '<td>' + esc(r[3] || '—') + '</td>' +
+        '<td>' + esc(r['Project Title'] || '—') + '</td>' +
+        '<td><span class="badge">' + esc(r['Project Type'] || '—') + '</span></td>' +
+        '<td>' + esc(r['Start Date'] || '—') + '</td>' +
+        '<td>' + esc(r['End Date'] || '—') + '</td>' +
       '</tr>'
     ).join('');
   }
