@@ -127,8 +127,8 @@
       allRows = rows.map(row => [
         row.c[0] ? String(row.c[0].v) : '',
         row.c[1] ? String(row.c[1].v) : '',
-        row.c[2] ? String(row.c[2].v) : '',
-        row.c[3] ? String(row.c[3].v) : ''
+        row.c[2] ? formatVal(row.c[2]) : '',
+        row.c[3] ? formatVal(row.c[3]) : ''
       ]);
       populateTypeFilter();
       render();
@@ -136,6 +136,12 @@
       tbody.innerHTML = '<tr class="state-row"><td colspan="4">⚠️ Could not load project data. Please try again later.</td></tr>';
       countEl.textContent = '';
     }
+  }
+
+  function formatVal(cell) {
+    // Use the formatted value (f) if available, otherwise fall back to raw value
+    if (cell.f) return cell.f;
+    return cell.v ? String(cell.v) : '';
   }
 
   function populateTypeFilter() {
