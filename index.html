@@ -280,7 +280,8 @@
 
   async function loadData() {
     try {
-      const res = await fetch(CSV_URL);
+      const PROXY = 'https://corsproxy.io/?url=';
+      const res = await fetch(PROXY + encodeURIComponent(CSV_URL));
       if (!res.ok) throw new Error('Network response was not ok');
       const text = await res.text();
       allRows = parseCSV(text).slice(1); // skip header row
