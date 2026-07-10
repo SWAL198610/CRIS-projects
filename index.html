@@ -162,20 +162,26 @@
     const q    = searchEl.value.toLowerCase();
     const type = typeFilter.value;
 
-    const today = new Date();
+const today = new Date();
+
+const toDate = s => { 
+  const p = (s||'').split('/'); 
+  return p.length===3 ? new Date(p[2],p[1]-1,p[0]) : new Date(0); 
+};
 
 const filtered = allRows.filter(r => {
   const matchSearch = !q || ['Project Title','Project Type','Start Date','End Date'].some(k => (r[k] || '').toLowerCase().includes(q));
   const matchType   = !type || r['Project Type'] === type;
-  const parts = (r['End Date'] || '').split('/');
-  const endDate = parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null;
-  const notExpired = endDate ? endDate >= today : true;
-  return matchSearch && matchType && notExpired;
+  return matchSearch && matchType;
 }).sort((a, b) => {
-  const toDate = s => { const p = (s||'').split('/'); return p.length===3 ? new Date(p[2],p[1]-1,p[0]) : new Date(0); };
+  const aEnd = toDate(a['End Date']);
+  const bEnd = toDate(b['End Date']);
+  const aActive = aEnd >= today;
+  const bActive = bEnd >= today;
+  if (aActive && !bActive) return -1;
+  if (!aActive && bActive) return 1;
   return toDate(b['Start Date']) - toDate(a['Start Date']);
 });
-
     countEl.textContent = filtered.length === allRows.length
       ? filtered.length + ' project' + (filtered.length !== 1 ? 's' : '')
       : filtered.length + ' of ' + allRows.length + ' projects';
